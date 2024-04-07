@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -55,68 +56,85 @@ namespace TK_SumPoints
         {
 
         }
-        public bool Test( string one, string two, string tree, string four)
+        
+        public bool Test(string one, string two, string tree, string four)
         {
+            int result;
+            int vivod;
             if (string.IsNullOrWhiteSpace(one) || string.IsNullOrWhiteSpace(two) || string.IsNullOrWhiteSpace(tree) || string.IsNullOrWhiteSpace(four))
             {
                 MessageBox.Show("Введите баллы за все задачи!");
                 return false;
             }
-            if (int.TryParse(one, out int resone) && int.TryParse(two, out int restwo) && int.TryParse(tree, out int restree) && int.TryParse(four, out int resfour))
+            if (int.Parse(one) < 0 || int.Parse(two) < 0 || int.Parse(tree) < 0 || int.Parse(four) < 0) 
             {
-                if (resone <= 10 && restwo <= 50 && restree <= 30 && resfour <= 10)
+                MessageBox.Show("Количество баллов за задание не может быть отрицательным!");
+                return false;
+            }
+
+                if (int.TryParse(one, out int resone) && int.TryParse(two, out int restwo) && int.TryParse(tree, out int restree) && int.TryParse(four, out int resfour))
+            {
+                if (resone >= 0 || restwo >= 0 || restree >= 0 || resfour >= 0)
                 {
-                    int result = resone + restwo + restree + resfour;
-                    SumTask.Text = result.ToString();
-                    if (result >= 0 && result <= 19)
+                    if (resone <= 10 && restwo <= 50 && restree <= 30 && resfour <= 10)
                     {
-                        Rating.Text = "2";
-                        Rating.Background = Brushes.Red; // здесь ошибка. исправить добавить везде ретёрн.
+                        result = resone + restwo + restree + resfour;
+                        SumTask.Text = result.ToString();
+                        if (result >= 0 && result <= 19)
+                        {
+                            vivod = 2;
+                            Rating.Text = vivod.ToString();
+                            Rating.Background = Brushes.Red; // здесь ошибка. исправить добавить везде ретёрн.
+                            return true;
+                        }
+                        if (result >= 20 && result <= 39)
+                        {
+                            vivod = 3;
+                            Rating.Text = vivod.ToString();
+                            Rating.Background = Brushes.Orange;
+                            return true;
+
+
+                        }
+                        if (result >= 40 && result <= 69)
+                        {
+                            vivod = 4;
+                            Rating.Text = vivod.ToString();
+                            Rating.Background = Brushes.YellowGreen;
+                            return true;
+
+                        }
+                        if (result >= 70 && result <= 100)
+                        {
+                            vivod = 5;
+                            Rating.Text = vivod.ToString();
+                            Rating.Background = Brushes.LightGreen;
+                            return true;
+
+                        }
+                        return false;
+
+
+
                     }
-                    if (result >= 20 && result <= 39)
+                    else
                     {
-                        Rating.Text = "3";
-                        Rating.Background = Brushes.Orange;
-                        return true;
+                        MessageBox.Show("Внимательно посмотрите на максимальное количество баллов в каждом задании!");
+                        return false;
 
                     }
-                    if (result >= 40 && result <= 69)
-                    {
-                        Rating.Text = "4";
-                        Rating.Background = Brushes.YellowGreen;
-                        return true;
-
-                    }
-                    if (result >= 70 && result <= 100)
-                    {
-                        Rating.Text = "5";
-                        Rating.Background = Brushes.LightGreen;
-                        return true;
-
-                    }
-                    return true;
-
-
-                }
-                else
-                {
-                    MessageBox.Show("Внимательно посмотрите на максимальное количество баллов в каждом задании!");
-                    return false;
-
                 }
             }
             return false;
+            
+            
         }
    
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Test(Task1.Text,Task2.Text,Task3.Text,Task4.Text);
         }
-        public void OnlyInt(object sender, System.Windows.Input.TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[0-9]");
-            e.Handled = regex.IsMatch(e.Text);
-        }
+        
     }
 }
 
