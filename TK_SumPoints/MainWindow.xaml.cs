@@ -72,7 +72,7 @@ namespace TK_SumPoints
                 return false;
             }
 
-                if (int.TryParse(one, out int resone) && int.TryParse(two, out int restwo) && int.TryParse(tree, out int restree) && int.TryParse(four, out int resfour))
+                if (int.TryParse(one, out int resone)&& int.TryParse(two, out int restwo)&&int.TryParse(tree, out int restree) && int.TryParse(four, out int resfour))
             {
                 if (resone >= 0 || restwo >= 0 || restree >= 0 || resfour >= 0)
                 {
@@ -112,6 +112,7 @@ namespace TK_SumPoints
                             return true;
 
                         }
+
                         return false;
 
 
@@ -134,7 +135,14 @@ namespace TK_SumPoints
         {
             Test(Task1.Text,Task2.Text,Task3.Text,Task4.Text);
         }
-        
+        public void OnlyInt(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if ((e.Text) == null || !(e.Text).All(char.IsDigit))
+            {
+                e.Handled = true;
+            }
+            else { e.Handled = false; }
+        }
     }
 }
 
@@ -248,8 +256,10 @@ namespace TK_SumPoints
         }
         public void OnlyInt(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[0-9]");
-            e.Handled = regex.IsMatch(e.Text);
+            if ((e.Text) == null || !(e.Text).All(char.IsDigit))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
